@@ -1,0 +1,47 @@
+buildscript{
+    repositories{
+        jcenter()
+    }
+    dependencies{
+        classpath "com.android.tools.build:gradle:2.3.0"
+    }
+}
+apply plugin: "com.android.application"
+
+repositories{
+    mavenCentral()
+    jcenter()
+    maven{
+        name = "Google"
+        url = "https://maven.google.com"
+    }
+}
+
+dependencies{
+    compile "com.google.code.gson:gson:2.8.2"
+    compile "com.google.guava:guava:23.4-android"
+}
+
+android{
+    compileSdkVersion 25
+    buildToolsVersion '26.0.2'
+
+    defaultConfig{
+        minSdkVersion 15
+        targetSdkVersion 25
+    }
+
+    compileOptions{
+        sourceCompatibility = JavaVersion.VERSION_1_7
+        targetCompatibility = JavaVersion.VERSION_1_7
+    }
+
+    sourceSets{
+        main{
+            java.srcDirs "src/main/java"
+            res.srcDirs "src/main/res"
+        }
+        androidTest.setRoot("tests")
+        androidTest.java.srcDirs = [ "tests/src" ]
+    }
+}
