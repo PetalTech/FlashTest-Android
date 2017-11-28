@@ -31,8 +31,8 @@
             "class": "com.petaltech.flashtest.seq.SeqBlinkBox",
             "data": {
               "box": "middle",
-              "epoch": "1s",
-              "frequency": "1Hz",
+              "epoch": "1m",
+              "frequency": "500Hz",
               "colors": [
                 "0000FF",
                 "00FF00"
@@ -43,8 +43,8 @@
             "class": "com.petaltech.flashtest.seq.SeqBlinkBox",
             "data": {
               "box": "bottom",
-              "epoch": "1s",
-              "frequency": "1Hz",
+              "epoch": "1h",
+              "frequency": "100Hz",
               "colors": [
                 "FF0000",
                 "0000FF"

@@ -55,8 +55,8 @@ implements SeqStep{
     }
 
     @Override
-    public void invoke(RefreshCallback cb, ScheduledExecutorService exec, AtomicIntegerArray colors, AtomicReferenceArray<Boolean> visibility){
-        for(SeqStep step : this.steps) step.invoke(cb, exec, colors, visibility);
+    public void invoke(RefreshCallback cb,  AtomicIntegerArray colors, AtomicReferenceArray<Boolean> visibility){
+        for(SeqStep step : this.steps) step.invoke(cb, colors, visibility);
     }
 
     @Override

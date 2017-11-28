@@ -11,8 +11,6 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.lang.reflect.Type;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.concurrent.atomic.AtomicReferenceArray;
@@ -38,7 +36,7 @@ implements SeqStep{
 
     @Override
     public long getLength() {
-        return this.epoch.getLength();
+        return this.epoch.asMillis();
     }
 
     public long getFrequency(){
@@ -46,34 +44,28 @@ implements SeqStep{
     }
 
     @Override
-    public void invoke(final RefreshCallback cb, ScheduledExecutorService exec, final AtomicIntegerArray colors, AtomicReferenceArray<Boolean> visibility){
-        exec.scheduleAtFixedRate(
-                new Runnable(){
-                    private final long start = System.currentTimeMillis();
-                    private final AtomicInteger ptr = new AtomicInteger(0);
+    public void invoke(final RefreshCallback cb, final AtomicIntegerArray colors, AtomicReferenceArray<Boolean> visibility){
+        try{
+            long start = System.currentTimeMillis();
+            AtomicInteger ptr = new AtomicInteger(0);
+            do{
+                long delta = System.currentTimeMillis() - start;
+                if(delta >= this.getLength()){
+                    return;
+                }
 
-                    @Override
-                    public void run(){
-                        do{
-                            long delta = System.currentTimeMillis() - this.start;
-                            if(delta >= getLength()){
-                                return;
-                            }
+                int idx = ptr.getAndIncrement();
+                if(idx >= this.getColors().length){
+                    ptr.set(0);
+                }
 
-                            int idx = this.ptr.getAndIncrement();
-                            if(idx >= getColors().length){
-                                this.ptr.set(0);
-                            }
-
-                            System.out.println(getBox().name() + " := " + getColors()[idx]);
-                            colors.set(getBox().ordinal(), getColors()[idx]);
-                            cb.refresh();
-                        } while(!Thread.interrupted());
-                    }
-                },
-                0, this.getFrequency(),
-                TimeUnit.MILLISECONDS
-        );
+                colors.set(getBox().ordinal(), getColors()[idx]);
+                cb.refresh();
+                Thread.sleep(this.getFrequency());
+            } while(!Thread.interrupted());
+        } catch(Exception e){
+            e.printStackTrace(System.err);
+        }
     }
 
     @Override

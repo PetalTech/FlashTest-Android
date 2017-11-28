@@ -78,7 +78,7 @@ implements RefreshCallback{
         SeqStep[][] steps = seq.getSteps();
         SeqBox[] boxes = SeqBox.values();
         for(int i = 0; i < boxes.length; i++){
-            EXECUTOR.submit(new SequenceTicker(boxes[i], this, steps[i]));
+            EXECUTOR.submit(new SequenceTicker(this, steps[i]));
         }
     }
 
@@ -95,12 +95,14 @@ implements RefreshCallback{
             Rect rect = this.boxes[i];
             int color = this.colors.get(i);
 
+            int oldLeft = rect.left;
             rect.left = (c.getWidth() - rect.width() + 100) / 2;
 
             this.paint.setColor(color);
             c.translate(0, yOff);
             c.drawRect(rect, this.paint);
             yOff = (rect.height() + 100);
+            rect.left = oldLeft;
         }
     }
 
@@ -114,16 +116,14 @@ implements RefreshCallback{
         private final AtomicInteger counter = new AtomicInteger(0);
         private final SequenceView seqView;
         private final SeqStep[] steps;
-        private final SeqBox box;
 
-        SequenceTicker(SeqBox box, SequenceView seqView, SeqStep[] steps){
+        SequenceTicker(SequenceView seqView, SeqStep[] steps){
             this.seqView = seqView;
             this.steps = steps;
-            this.box = box;
         }
 
         @Override
-        public void run(){
+        public void run() {
             try{
                 while(!Thread.interrupted()){
                     int idx = this.counter.getAndIncrement();
@@ -132,14 +132,10 @@ implements RefreshCallback{
                     }
 
                     SeqStep step = this.steps[idx];
-                    System.out.println(this.box.name() + " - " + step.getClass().getSimpleName());
-                    step.invoke(this.seqView, EXECUTOR, this.seqView.colors, this.seqView.visibility);
-
-                    this.seqView.postInvalidate();
-                    Thread.sleep(step.getLength());
+                    step.invoke(this.seqView, this.seqView.colors, this.seqView.visibility);
                 }
             } catch(Exception e){
-                e.printStackTrace(System.err);
+                throw new RuntimeException(e);
             }
         }
     }

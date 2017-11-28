@@ -46,21 +46,17 @@ implements SeqStep{
     }
 
     @Override
-    public void invoke(final RefreshCallback cb, ScheduledExecutorService exec, AtomicIntegerArray colors, final AtomicReferenceArray<Boolean> visibility) {
-        exec.submit(new Runnable(){
-            @Override
-            public void run(){
-                try{
-                    visibility.set(getBox().ordinal(), isVisible());
-                    cb.refresh();
-                    Thread.sleep(getLength());
-                    visibility.set(getBox().ordinal(), !isVisible());
-                    cb.refresh();
-                } catch (InterruptedException e) {
-                    e.printStackTrace(System.err);
-                }
-            }
-        });
+    public void invoke(final RefreshCallback cb, AtomicIntegerArray colors, final AtomicReferenceArray<Boolean> visibility) {
+        try{
+            visibility.set(getBox().ordinal(), isVisible());
+            cb.refresh();
+            Thread.sleep(this.getLength());
+
+            visibility.set(getBox().ordinal(), !isVisible());
+            cb.refresh();
+        } catch(Exception e){
+            e.printStackTrace(System.err);
+        }
     }
 
     @Override
