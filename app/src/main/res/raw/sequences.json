@@ -1,0 +1,58 @@
+[
+  {
+    "name": "Default",
+    "sizes": [
+      "920x350",
+      "920x350",
+      "920x350"
+    ],
+    "colors": [
+      "FF0000",
+      "00FF00",
+      "0000FF"
+    ],
+    "steps": [
+      {
+        "class": "com.petaltech.flashtest.seq.SeqCompound",
+        "data": [
+          {
+            "class": "com.petaltech.flashtest.seq.SeqBlinkBox",
+            "data": {
+              "box": "top",
+              "epoch": "1s",
+              "frequency": "1Hz",
+              "colors": [
+                "FF0000",
+                "00FF00"
+              ]
+            }
+          },
+          {
+            "class": "com.petaltech.flashtest.seq.SeqBlinkBox",
+            "data": {
+              "box": "middle",
+              "epoch": "1s",
+              "frequency": "1Hz",
+              "colors": [
+                "0000FF",
+                "00FF00"
+              ]
+            }
+          },
+          {
+            "class": "com.petaltech.flashtest.seq.SeqBlinkBox",
+            "data": {
+              "box": "bottom",
+              "epoch": "1s",
+              "frequency": "1Hz",
+              "colors": [
+                "FF0000",
+                "0000FF"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

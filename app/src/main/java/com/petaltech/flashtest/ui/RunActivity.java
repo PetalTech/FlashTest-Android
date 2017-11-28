@@ -3,25 +3,24 @@ package com.petaltech.flashtest.ui;
 import android.app.Activity;
 import android.os.Bundle;
 
-import com.petaltech.flashtest.data.SequenceModel;
-import com.petaltech.flashtest.ui.views.SequenceModelView;
+import com.petaltech.flashtest.FlashTest;
+import com.petaltech.flashtest.seq.Sequence;
+import com.petaltech.flashtest.ui.view.SequenceView;
 
 public final class RunActivity
 extends Activity{
-    private SequenceModelView modelView;
+    private SequenceView seqView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.setContentView(this.modelView = new SequenceModelView(this));
-        SequenceModel model = (SequenceModel) this.getIntent().getSerializableExtra("model");
-        this.setSequenceModel(model);
-    }
-
-    public void setSequenceModel(SequenceModel model){
-        if(this.modelView != null){
-            this.modelView.setModel(model);
-            this.modelView.invalidate();
+        this.setContentView(this.seqView = new SequenceView(this));
+        String name = this.getIntent().getStringExtra("seq");
+        for(Sequence seq : FlashTest.SEQUENCES){
+            if(seq.getName().equals(name)){
+                this.seqView.setSequence(seq);
+                break;
+            }
         }
     }
 }
