@@ -18,5 +18,6 @@
         </activity>
 
         <activity android:name=".ui.RunActivity"/>
+        <activity android:name=".ui.CreateActivity"/>
     </application>
 </manifest>

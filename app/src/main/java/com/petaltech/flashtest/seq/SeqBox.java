@@ -14,4 +14,8 @@ public enum SeqBox{
     public float getScale(){
         return (float) this.scale;
     }
+
+    public String getDisplayName(){
+        return this.name().toLowerCase();
+    }
 }

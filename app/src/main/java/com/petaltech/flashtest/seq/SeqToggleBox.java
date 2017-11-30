@@ -1,5 +1,7 @@
 package com.petaltech.flashtest.seq;
 
+import android.widget.TextView;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -10,6 +12,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.lang.reflect.Type;
+import java.util.Locale;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.concurrent.atomic.AtomicReferenceArray;
@@ -57,6 +60,21 @@ implements SeqStep{
         } catch(Exception e){
             e.printStackTrace(System.err);
         }
+    }
+
+    @Override
+    public void bind(TextView view){
+        view.setText(this.getTextView());
+    }
+
+    @Override
+    public String getTextView() {
+        return String.format(
+                Locale.ENGLISH,
+                "Make %s box %s",
+                this.box.getDisplayName(),
+                this.visible ? "visible" : "invisible"
+        );
     }
 
     @Override

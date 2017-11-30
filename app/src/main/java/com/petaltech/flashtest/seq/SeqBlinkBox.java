@@ -1,5 +1,7 @@
 package com.petaltech.flashtest.seq;
 
+import android.widget.TextView;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -11,6 +13,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.lang.reflect.Type;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicIntegerArray;
 import java.util.concurrent.atomic.AtomicReferenceArray;
@@ -66,6 +69,31 @@ implements SeqStep{
         } catch(Exception e){
             e.printStackTrace(System.err);
         }
+    }
+
+    private String getColorString(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 0; i < this.colors.length; i++){
+            sb.append("0x").append(Integer.toHexString(this.colors[i]));
+            if(i < this.colors.length - 1) sb.append(",");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public void bind(TextView view){
+        view.setText(this.getTextView());
+    }
+
+    @Override
+    public String getTextView() {
+        return String.format(
+                Locale.ENGLISH,
+                "Flash %s at %s for %s",
+                this.getColorString(),
+                this.frequency.toString(),
+                this.epoch.toString()
+        );
     }
 
     @Override

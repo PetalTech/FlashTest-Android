@@ -52,7 +52,9 @@ implements AdapterView.OnItemClickListener{
 
         try{
             in = this.openFileInput("/sequences.json");
-            seqs.addAll((List<Sequence>) FlashTest.GSON.fromJson(new InputStreamReader(in), SEQUENCE_TYPETOKEN.getType()));
+            List<Sequence> userSequences = FlashTest.GSON.fromJson(new InputStreamReader(in), SEQUENCE_TYPETOKEN.getType());
+            seqs.addAll(userSequences);
+            FlashTest.USER_SEQUENCES.addAll(userSequences);
         } catch(Exception e){
             e.printStackTrace(System.err);
             //Ignore
@@ -95,6 +97,8 @@ implements AdapterView.OnItemClickListener{
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if(this.sequences == null) return;
         if(position == this.sequences.length){
+            Intent i = new Intent(this, CreateActivity.class);
+            this.startActivity(i);
             return;
         }
         Sequence seq = this.sequences[position];

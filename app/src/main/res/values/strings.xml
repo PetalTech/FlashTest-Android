@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FlashTest</string>
+    <string name="save_str">Save</string>
 </resources>

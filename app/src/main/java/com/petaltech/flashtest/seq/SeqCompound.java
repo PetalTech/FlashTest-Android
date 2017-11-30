@@ -1,5 +1,7 @@
 package com.petaltech.flashtest.seq;
 
+import android.widget.TextView;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
@@ -57,6 +59,20 @@ implements SeqStep{
     @Override
     public void invoke(RefreshCallback cb,  AtomicIntegerArray colors, AtomicReferenceArray<Boolean> visibility){
         for(SeqStep step : this.steps) step.invoke(cb, colors, visibility);
+    }
+
+    @Override
+    public void bind(TextView view){
+        view.setText(this.getTextView());
+    }
+
+    @Override
+    public String getTextView() {
+        StringBuilder sb = new StringBuilder();
+        for(SeqStep step : this.steps){
+            sb.append(step.getTextView()).append("\n");
+        }
+        return sb.toString();
     }
 
     @Override

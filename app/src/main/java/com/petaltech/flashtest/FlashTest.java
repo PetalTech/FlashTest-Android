@@ -12,4 +12,5 @@ public final class FlashTest{
             .create();
 
     public static final List<Sequence> SEQUENCES = new LinkedList<>();
+    public static final List<Sequence> USER_SEQUENCES = new LinkedList<>();
 }
